@@ -18,9 +18,9 @@ class Program
 
         while (true)
         {
-            Console.WriteLine("====================================");
-            Console.WriteLine("== IMPRIMIR NA IMPRESSORA RÓTULOS ==");
-            Console.WriteLine("====================================");
+            Console.WriteLine("=======================================");
+            Console.WriteLine("== IMPRIMIR NA IMPRESSORA DE RÓTULOS ==");
+            Console.WriteLine("=======================================");
             Console.WriteLine("\nConfigurações Atuais:");
             Console.WriteLine("Impressora: " + config.NomeImpressora);
             Console.WriteLine("Tamanho da Fonte: " + config.TamanhoFonte);
