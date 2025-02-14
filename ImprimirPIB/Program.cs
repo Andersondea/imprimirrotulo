@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Text.Json;
 
 class Program
@@ -111,6 +112,7 @@ class Program
     static void Imprimir()
     {
         index = 0;
+        int labelIndex = 1; // Contador de rótulos
         PrintDocument printDoc = new PrintDocument();
         printDoc.PrinterSettings.PrinterName = config.NomeImpressora;
 
@@ -120,6 +122,7 @@ class Program
             float espacamentoLinhas = 40f;
             float larguraEtiqueta = 90f;
             float alturaEtiqueta = 60f;
+            float deslocamentoConteudo = 30f; // Move o conteúdo para baixo
 
             for (int i = 0; i < config.LinhasPorRotulo; i++)
             {
@@ -127,13 +130,27 @@ class Program
                 {
                     if (index < numeros.Count)
                     {
-                        string number = numeros[index++];
                         float x = margemEsquerda + j * larguraEtiqueta;
                         float y = i * espacamentoLinhas;
-                        e.Graphics.DrawString(number, new Font("Courier New", config.TamanhoFonte), Brushes.Black, x, y);
+
+                        // Imprime a numeração do rótulo APENAS UMA VEZ por rótulo
+                        if (j == 0 && i == 0) // Somente no início do rótulo
+                        {
+                            e.Graphics.DrawString($"Rótulo {labelIndex}",
+                                new Font("Courier New", config.TamanhoFonte, FontStyle.Bold),
+                                Brushes.Black, x, y);
+                           // y += deslocamentoConteudo; // Move o cursor para baixo para o conteúdo
+                        }
+
+                        // Imprime os números abaixo do cabeçalho
+                        e.Graphics.DrawString(numeros[index++],
+                            new Font("Courier New", config.TamanhoFonte),
+                            Brushes.Black, x, y + deslocamentoConteudo);
                     }
                 }
             }
+
+            labelIndex++; // Incrementa o número do rótulo para o próximo
             e.HasMorePages = index < numeros.Count;
         };
 
@@ -146,6 +163,8 @@ class Program
             Console.WriteLine("Erro ao imprimir: " + ex.Message);
         }
     }
+
+
 
     static void CarregarConfiguracoes()
     {
@@ -170,7 +189,7 @@ class Program
 
 class Configuracao
 {
-    public string NomeImpressora { get; set; } = "4BARCODE 4B-2074B";
+    public string NomeImpressora { get; set; } = "4BARCODE 4B-2074B"; // "Microsoft Print to PDF";
     public float TamanhoFonte { get; set; } = 8f;
     public int ColunasPorRotulo { get; set; } = 4;
     public int LinhasPorRotulo { get; set; } = 4;
