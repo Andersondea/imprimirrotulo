@@ -137,14 +137,14 @@ class Program
                         if (j == 0 && i == 0) // Somente no início do rótulo
                         {
                             e.Graphics.DrawString($"Rótulo {labelIndex}",
-                                new Font("Courier New", config.TamanhoFonte, FontStyle.Bold),
+                                new Font("Courier New", config.TamanhoFonte),
                                 Brushes.Black, x, y);
                            // y += deslocamentoConteudo; // Move o cursor para baixo para o conteúdo
                         }
 
                         // Imprime os números abaixo do cabeçalho
                         e.Graphics.DrawString(numeros[index++],
-                            new Font("Courier New", config.TamanhoFonte),
+                            new Font("Courier New", config.TamanhoFonte, FontStyle.Bold),
                             Brushes.Black, x, y + deslocamentoConteudo);
                     }
                 }
